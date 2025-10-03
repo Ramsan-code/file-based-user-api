@@ -1,84 +1,5 @@
-// console.log("rgw");
-// const fs = require("fs");
-// const filePath = require("../data/users.json");
-// // const users = require("./api/users.json");
-
-// // exports.getAllusers = (req, res) => {
-// //   res.json(users);};
-
-// fs.readFile(filePath, "utf-8", (err, data) => {
-//   if (!data) return res.status(404).json({ error: "User not found" });
-// });
-
-// fs.writeFile(filePath, content, "utf8", (err) => {
-//   if (err) {
-//     return res.status(500).send("Error writing file.");
-//   }
-//   res.status(200).send("User added successfully.");
-// });
-
-// exports.getAllusers = (req, res) => {
-//   res.json(filePath);
-// };
-// exports.getUserByID = (req, res) => {
-//   const userID = req.params.id;
-//   const user = users.find(u => u.id === userID); // arr
-//   if (!user) return res.status(404).json({ error: "User not found" });
-//   res.json(user);
-// };
-
-// exports.createUser = (req, res) => {
-//   const { id, name, email } = req.body;
-//   const newUser = { id, name, email };
-//   users.push(newUser);
-
-// const fs = require("fs");
-// const filePath = "../data/users.json";
-
-// exports.getAllUsers = (req, res) => {
-//   fs.readFile(filePath, "utf-8", (err, data) => {
-//     if (err) {
-//       return res.status(500).json({ error: "Error reading file" });
-//     }
-
-//     try {
-//       const users = JSON.parse(data);
-//       res.json(users);
-//     } catch (parseErr) {
-//       return res.status(500).json({ error: "Error parsing JSON" });
-//     }
-//   });
-// };
-
-// exports.createUser = (req, res) => {
-//   const { id, name, email } = req.body;
-//   const newUser = { id, name, email };
-
-//   // First read existing users
-//   fs.readFile(filePath, "utf-8", (err, data) => {
-//     let users = [];
-
-//     if (!err && data) {
-//       try {
-//         users = JSON.parse(data);
-//       } catch (parseErr) {
-//         return res.status(500).json({ error: "Error parsing existing data" });
-//       }
-//     }
-
-//     users.push(newUser);
-
-//     // Write updated users back to file
-//     fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf8", (writeErr) => {
-//       if (writeErr) {
-//         return res.status(500).json({ error: "Error writing file" });
-//       }
-//       res.status(200).json({ message: "User added successfully", user: newUser });
-//     });
-//   });
-// };
-
 import { readFileSync, writeFileSync } from "fs";
+
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -100,7 +21,7 @@ function writeUsers(users) {
   writeFileSync(filePath, JSON.stringify(users, null, 2));
 }
 
-export const getAllUsers = (req, res) => {
+const getAllUsers = (req, res) => {
   try {
     const users = readUsers();
     res.json(users);
@@ -109,7 +30,7 @@ export const getAllUsers = (req, res) => {
   }
 };
 
-export const getUserById = (req, res) => {
+const getUserById = (req, res) => {
   try {
     const users = readUsers();
     const user = users.find((u) => u.id === parseInt(req.params.id));
@@ -124,7 +45,7 @@ export const getUserById = (req, res) => {
   }
 };
 
-export const createUser = (req, res) => {
+const createUser = (req, res) => {
   try {
     const { name, email } = req.body;
 
@@ -158,7 +79,7 @@ export const createUser = (req, res) => {
   }
 };
 
-export const updateUser = (req, res) => {
+const updateUser = (req, res) => {
   try {
     const userId = parseInt(req.params.id);
     const { name, email } = req.body;
@@ -194,7 +115,7 @@ export const updateUser = (req, res) => {
   }
 };
 
-export const deleteUser = (req, res) => {
+const deleteUser = (req, res) => {
   try {
     const userId = parseInt(req.params.id);
     const users = readUsers();
@@ -217,3 +138,4 @@ export const deleteUser = (req, res) => {
     res.status(500).json({ error: "Failed to delete user" });
   }
 };
+export { getAllUsers, getUserById, createUser, updateUser, deleteUser };
